@@ -1,0 +1,69 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+
+# Load the Iris dataset from the URL
+url = 'https://raw.githubusercontent.com/sarwansingh/Python/master/ClassExamples/data/iris.csv'
+namelist = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
+
+iris = pd.read_csv(url, header=None, names=namelist)
+
+# Display the first few rows of the dataset
+iris.head()
+
+
+# Convert the dataset to a NumPy array for easier manipulation
+iris1 = np.array(iris)
+
+# Separate the features (X) and the target label (Y)
+X = iris1[:, 0:4]  # Features
+Y = iris1[:, 4]    # Target
+
+# Display the features and labels
+print(f"Features (X): {X[:5]}")
+print(f"Labels (Y): {Y[:5]}")
+
+
+# Split the dataset into training and testing sets (80% train, 20% test)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# Display the shape of training and testing sets
+print(f"Training Set Shape (X_train): {X_train.shape}")
+print(f"Testing Set Shape (X_test): {X_test.shape}")
+
+# Initialize the Logistic Regression model
+model = LogisticRegression()
+
+# Train the model on the training data
+model.fit(X_train, Y_train)
+
+# Display a message when training is complete
+print("Model training complete.")
+
+
+# Predict on the test data
+Y_pred = model.predict(X_test)
+
+# Display the first few predictions and the actual labels
+print(f"Predicted Labels: {Y_pred[:5]}")
+print(f"Actual Labels: {Y_test[:5]}")
+
+# Calculate the accuracy of the model
+accuracy = accuracy_score(Y_test, Y_pred)
+
+# Print the accuracy
+print(f"Model Accuracy: {accuracy * 100:.2f}%")
+
+# Example of making a prediction with a new sample
+sample_input = np.array([[6.5, 3.0, 5.2, 2.0]])
+
+# Predict the species for the sample input
+predicted_species = model.predict(sample_input)
+
+# Print the predicted species
+print(f"Predicted Species: {predicted_species[0]}")
+
