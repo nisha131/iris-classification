@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris Flower Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Iris Flower Prediction</h1>
+    <form id="irisForm">
+        <label for="sepalLength">Sepal Length:</label>
+        <input type="text" id="sepalLength" name="sepalLength" required>
+        <br><br>
+        <label for="sepalWidth">Sepal Width:</label>
+        <input type="text" id="sepalWidth" name="sepalWidth" required>
+        <br><br>
+        <label for="petalLength">Petal Length:</label>
+        <input type="text" id="petalLength" name="petalLength" required>
+        <br><br>
+        <label for="petalWidth">Petal Width:</label>
+        <input type="text" id="petalWidth" name="petalWidth" required>
+        <br><br>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        const form = document.getElementById('irisForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = `Predicted Species: ${result.prediction}`;
+        });
+    </script>
+</body>
+</html>
