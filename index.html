@@ -1,52 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iris Flower Prediction</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IRIS ML Project</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Iris Flower Prediction</h1>
-    <form id="irisForm">
-        <label for="sepalLength">Sepal Length:</label>
-        <input type="text" id="sepalLength" name="sepalLength" required>
-        <br><br>
-        <label for="sepalWidth">Sepal Width:</label>
-        <input type="text" id="sepalWidth" name="sepalWidth" required>
-        <br><br>
-        <label for="petalLength">Petal Length:</label>
-        <input type="text" id="petalLength" name="petalLength" required>
-        <br><br>
-        <label for="petalWidth">Petal Width:</label>
-        <input type="text" id="petalWidth" name="petalWidth" required>
-        <br><br>
-        <button type="submit">Predict</button>
-    </form>
-    <div id="result"></div>
-
-    <script>
-        const form = document.getElementById('irisForm');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(form);
-            const response = await fetch('/predict', {
-                method: 'POST',
-                body: formData
-            });
-
-            const result = await response.json();
-            document.getElementById('result').innerText = `Predicted Species: ${result.prediction}`;
-        });
-    </script>
+<body class="bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mt-5">
+          <div class="card-header bg-primary text-white text-center">
+            <h1>IRIS ML PROJECT</h1>
+          </div>
+          <div class="card-body">
+            <form action="/rec" method="POST">
+              <div class="form-group">
+                <label for="spl">Sepal Length</label>
+                <input type="text" class="form-control" id="spl" name="spl" placeholder="Enter sepal length">
+              </div>
+              <div class="form-group">
+                <label for="spw">Sepal Width</label>
+                <input type="text" class="form-control" id="spw" name="spw" placeholder="Enter sepal width">
+              </div>
+              <div class="form-group">
+                <label for="ptl">Petal Length</label>
+                <input type="text" class="form-control" id="ptl" name="ptl" placeholder="Enter petal length">
+              </div>
+              <div class="form-group">
+                <label for="ptw">Petal Width</label>
+                <input type="text" class="form-control" id="ptw" name="ptw" placeholder="Enter petal width">
+              </div>
+              <button type="submit" class="btn btn-success btn-block">Predict Type of Flower</button>
+            </form>
+            <div class="mt-4">
+              <h4>Prediction Result:</h4>
+              <p id="result" class="alert alert-info">{{result}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
