@@ -1,41 +1,39 @@
-
-from flask import Flask, render_template, request, jsonify
+from flask import * 
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
+import numpy as np
+from  sklearn.linear_model import LogisticRegression
 
-app = Flask(__name__)
+app = Flask  (__name__) 
+url ='https://raw.githubusercontent.com/sarwansingh/Python/master/ClassExamples/data/iris.csv'
 
-# Load the pre-trained model and scaler
-df = pd.read_csv('iris_dataset.csv')
-X = df.iloc[:, 2:6].values
-y = df['Species'].values
+namelist = ['sepal_length',	'sepal_width',	'petal_length',	'petal_width',	'species']
+iris = pd.read_csv(url , header=None,names = namelist )
 
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+iris1 = np.array(iris)
+X = iris1[:,0:4] 
+Y = iris1[:,4]
 
-clf = LogisticRegression(random_state=42)
-clf.fit(X_scaled, y)
+model = LogisticRegression()
+model.fit(X,Y)
+res= model.predict([[6.5,3.0,5.2,2.0]])
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/') 
+def hello_world(): 
+  return render_template('index.html')
+  # return 'Hello, MGCU champs !   ' + str(res[0])
+  
+@app.route('/rec', methods=['POST']) 
+def processdata(): 
+  spl= float( request.form['spl'] )
+  spw= float( request.form['spw'] )
+  ptl= float( request.form['ptl'] )
+  ptw= float( request.form['ptw'] )
+  
+  arr1 = np.array([ spl,spw,ptl,ptw]) 
+  res= model.predict([arr1])
+  
+  return render_template("index.html",result=str(res[0]))
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    sepal_length = float(request.form['sepalLength'])
-    sepal_width = float(request.form['sepalWidth'])
-    petal_length = float(request.form['petalLength'])
-    petal_width = float(request.form['petalWidth'])
 
-    # Scale the input values
-    input_data = scaler.transform([[sepal_length, sepal_width, petal_length, petal_width]])
-
-    # Predict the species
-    prediction = clf.predict(input_data)[0]
-
-    return jsonify({'prediction': prediction})
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
+if __name__ == '__main__': 
+  app.run()
